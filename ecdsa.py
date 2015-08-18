@@ -10,7 +10,7 @@ class EllipticCurve(object):
 
     @staticmethod
     def randint(n):
-        """ Uses os.urandom """
+        """ Returns a random number from 0..n-1 using os.urandom """
         num_bytes = (n.bit_length() + 7) // 8
         return int(urandom(num_bytes).encode('hex'), 16) % n
 
@@ -94,7 +94,7 @@ class EllipticCurve(object):
         z = self.shrink(e)
         k, r = None, None
         while True:
-            k = self.randint(E.n - 2) + 1
+            k = self.randint(E.n - 1) + 1
             P = E.point_multiply(k, self.G)
             r = P.x % self.n
             if r == 0:
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     x = 0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798,
     y = 0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8))
 
-    k = EllipticCurve.randint(E.n - 2) + 1
+    k = EllipticCurve.randint(E.n - 1) + 1
     pubk = E.public_key(k)
     m = 'TOO MANY SECRETS'
     e = int(sha256(sha256(m).digest()).hexdigest(), 16)
